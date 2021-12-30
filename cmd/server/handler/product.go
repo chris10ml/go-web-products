@@ -51,19 +51,12 @@ func (p *Product) GetAll() gin.HandlerFunc {
 
 func (p *Product) Store() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-
 		// Validacion de token en Middleware
-		// token := ctx.GetHeader("token") //token := ctx.Request.Header.Get("token")
-		// if token != "chris1234" {
-		// 	ctx.JSON(401, gin.H{"error": "invalid token"})
-		// }
 
 		// Cargo el body de la request
 		var req request
 		if err := ctx.ShouldBindJSON(&req); err != nil {
-			ctx.JSON(404, gin.H{
-				"error": err.Error(),
-			})
+			ctx.JSON(404, web.NewResponse(400, nil, err.Error()))
 			return
 		}
 
@@ -81,117 +74,99 @@ func (p *Product) Store() gin.HandlerFunc {
 		}
 
 		if errValidation != nil {
-			ctx.JSON(422, gin.H{"error": errValidation.Error()})
+			ctx.JSON(422, web.NewResponse(422, nil, errValidation.Error()))
 			return
 		}
 
 		// Hago el Post
 		productCreated, err := p.service.Store(req.Name, req.Color, req.Price, req.Stock, req.Code, req.Posted, req.DateCreated)
 		if err != nil {
-			ctx.JSON(404, gin.H{"error": err.Error()})
+			ctx.JSON(404, web.NewResponse(404, nil, errValidation.Error()))
 			return
 		}
-		ctx.JSON(200, productCreated)
+		ctx.JSON(200, web.NewResponse(200, productCreated, ""))
 	}
 }
 
 func (p *Product) Update() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		//Validar token
-		token := ctx.GetHeader("token")
-		if token != "chris1234" {
-			ctx.JSON(401, gin.H{"error": "invalid token"})
-		}
+		//Validacion de token en middleware
 
 		//Obtener y Parsear id string a int
 		idParam := ctx.Param("id")
 		id, err := strconv.ParseInt(idParam, 10, 64)
 
 		if err != nil {
-			ctx.JSON(400, gin.H{"error": "invalid id"})
+			ctx.JSON(400, web.NewResponse(400, nil, err.Error()))
 		}
 
 		//Cargo el body de la request
 		var req request
 		if err := ctx.ShouldBindJSON(&req); err != nil {
-			ctx.JSON(400, gin.H{"error": err.Error()})
+			ctx.JSON(400, web.NewResponse(400, nil, err.Error()))
 			return
 		}
 
 		//Validaciones
 
 		//Hago el Update
-		p, err := p.service.Update(int(id), req.Name, req.Color, req.Price, req.Stock, req.Code, req.Posted, req.DateCreated)
+		productUpdated, err := p.service.Update(int(id), req.Name, req.Color, req.Price, req.Stock, req.Code, req.Posted, req.DateCreated)
 		if err != nil {
-			ctx.JSON(404, gin.H{"error": err.Error()})
+			ctx.JSON(404, web.NewResponse(404, nil, err.Error()))
 			return
 		}
-		ctx.JSON(200, p)
+		ctx.JSON(200, web.NewResponse(200, productUpdated, ""))
 	}
 }
 
 func (p *Product) UpdateName() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		//Validar token
-		token := ctx.GetHeader("token")
-		if token != "chris1234" {
-			ctx.JSON(401, gin.H{"error": "invalid token"})
-		}
-
 		//Obtener y Parsear id string a int
 		idParam := ctx.Param("id")
 		id, err := strconv.ParseInt(idParam, 10, 64)
 
 		if err != nil {
-			ctx.JSON(400, gin.H{"error": "invalid id"})
+			ctx.JSON(400, web.NewResponse(400, nil, err.Error()))
 		}
 
 		//Cargo el body de la request
 		var req request
 		if err := ctx.ShouldBindJSON(&req); err != nil {
-			ctx.JSON(400, gin.H{"error": err.Error()})
+			ctx.JSON(400, web.NewResponse(400, nil, err.Error()))
 			return
 		}
 
 		//Validaciones
 		if req.Name == "" {
-			ctx.JSON(400, gin.H{"error": "name is required"})
+			ctx.JSON(400, web.NewResponse(400, nil, "name is required"))
 			return
 		}
 
 		//Hago el Update del Name
-		p, err := p.service.UpdateName(int(id), req.Name)
+		productUpdated, err := p.service.UpdateName(int(id), req.Name)
 		if err != nil {
-			ctx.JSON(404, gin.H{"error": err.Error()})
+			ctx.JSON(404, web.NewResponse(404, nil, err.Error()))
 			return
 		}
-		ctx.JSON(200, p)
+		ctx.JSON(200, web.NewResponse(200, productUpdated, ""))
 	}
 }
 
 func (p *Product) Delete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		//Validar token
-		token := ctx.GetHeader("token")
-		if token != "chris1234" {
-			ctx.JSON(401, gin.H{"error": "invalid token"})
-		}
-
 		//Obtener y Parsear id string a int
 		idParam := ctx.Param("id")
 		id, err := strconv.ParseInt(idParam, 10, 64)
 		if err != nil {
-			ctx.JSON(400, gin.H{"error": "invalid id"})
+			ctx.JSON(400, web.NewResponse(400, nil, err.Error()))
 		}
 
 		//Hacer el delete y enviar respuestas
 		err = p.service.Delete(int(id))
 		if err != nil {
-			ctx.JSON(404, gin.H{"error": err.Error()})
+			ctx.JSON(404, web.NewResponse(404, nil, err.Error()))
 			return
 		}
-		ctx.JSON(200, gin.H{
-			"data": fmt.Sprintf("Product %d deleted", id),
-		})
+		ctx.JSON(200, web.NewResponse(200, fmt.Sprintf("Product %d deleted", id), ""))
 	}
 }
