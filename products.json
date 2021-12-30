@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "name": "mouse",
+    "color": "white",
+    "price": 130.99,
+    "stock": 70,
+    "code": "mo1001",
+    "posted": true,
+    "date_created": "2021-12-23"
+  },
+  {
+    "id": 2,
+    "name": "teclado",
+    "color": "negro",
+    "price": 130.99,
+    "stock": 70,
+    "code": "mo1001",
+    "posted": true,
+    "date_created": "2021-12-23"
+  },
+  {
+    "id": 3,
+    "name": "silla",
+    "color": "roja",
+    "price": 5430.99,
+    "stock": 30,
+    "code": "si1001",
+    "posted": true,
+    "date_created": "2021-12-29"
+  }
+]
