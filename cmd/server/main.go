@@ -31,6 +31,7 @@ func main() {
 	}
 
 	db := store.New(store.FileType, "./products.json")
+
 	productRepository := products.NewRepository(db)
 	productService := products.NewService(productRepository)
 	productHandler := handler.NewProduct(productService)

@@ -49,6 +49,15 @@ func (p *Product) GetAll() gin.HandlerFunc {
 	}
 }
 
+// AddProduct godoc
+// @Summary Add product
+// @Tags Products
+// @Description add product
+// @Accept  json
+// @Produce  json
+// @Param token header string true "token"
+// @Success 200 {object} web.Response
+// @Router /products [post]
 func (p *Product) Store() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		// Validacion de token en Middleware
@@ -88,6 +97,15 @@ func (p *Product) Store() gin.HandlerFunc {
 	}
 }
 
+// AddProduct godoc
+// @Summary Update product
+// @Tags Products
+// @Description update product
+// @Accept  json
+// @Produce  json
+// @Param token header string true "token"
+// @Success 200 {object} web.Response
+// @Router /products [put]
 func (p *Product) Update() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		//Validacion de token en middleware
@@ -119,6 +137,15 @@ func (p *Product) Update() gin.HandlerFunc {
 	}
 }
 
+// AddProduct godoc
+// @Summary Update product
+// @Tags Products
+// @Description update name product
+// @Accept  json
+// @Produce  json
+// @Param token header string true "token"
+// @Success 200 {object} web.Response
+// @Router /products [patch]
 func (p *Product) UpdateName() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		//Obtener y Parsear id string a int
@@ -152,6 +179,15 @@ func (p *Product) UpdateName() gin.HandlerFunc {
 	}
 }
 
+// AddProduct godoc
+// @Summary Delete product
+// @Tags Products
+// @Description delete product
+// @Accept  json
+// @Produce  json
+// @Param token header string true "token"
+// @Success 200 {object} web.Response
+// @Router /products [delete]
 func (p *Product) Delete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		//Obtener y Parsear id string a int

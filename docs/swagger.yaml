@@ -20,6 +20,26 @@ info:
   version: "1.0"
 paths:
   /products:
+    delete:
+      consumes:
+      - application/json
+      description: delete product
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Delete product
+      tags:
+      - Products
     get:
       consumes:
       - application/json
@@ -38,6 +58,66 @@ paths:
           schema:
             $ref: '#/definitions/web.Response'
       summary: List products
+      tags:
+      - Products
+    patch:
+      consumes:
+      - application/json
+      description: update name product
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Update product
+      tags:
+      - Products
+    post:
+      consumes:
+      - application/json
+      description: add product
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Add product
+      tags:
+      - Products
+    put:
+      consumes:
+      - application/json
+      description: update product
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Update product
       tags:
       - Products
 swagger: "2.0"
