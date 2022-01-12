@@ -3,7 +3,7 @@
     "id": 1,
     "name": "mouse",
     "color": "white",
-    "price": 130.99,
+    "price": 130,
     "stock": 70,
     "code": "mo1001",
     "posted": true,

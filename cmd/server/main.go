@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -50,5 +51,7 @@ func main() {
 		productsRoutes.DELETE("/:id", productHandler.Delete())
 	}
 
-	router.Run()
+	if err := router.Run(); err != nil {
+		fmt.Println("server not listening")
+	}
 }

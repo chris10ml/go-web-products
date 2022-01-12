@@ -44,13 +44,17 @@ func (r *repository) LastID() (int, error) {
 // --- API CRUD ---
 
 func (r *repository) GetAll() ([]Product, error) {
-	r.db.Read(&products)
+	if err := r.db.Read(&products); err != nil {
+		fmt.Println("file cannot be read")
+	}
 
 	return products, nil
 }
 
 func (r *repository) Store(id int, name, color string, price float64, stock int, code string, posted bool, dateCreated string) (Product, error) {
-	r.db.Read(&products)
+	if err := r.db.Read(&products); err != nil {
+		fmt.Println("file cannot be read")
+	}
 
 	p := Product{id, name, color, price, stock, code, posted, dateCreated}
 	products = append(products, p)
@@ -75,7 +79,9 @@ func (r *repository) Update(id int, name, color string, price float64, stock int
 
 	updated := false
 
-	r.db.Read(&products)
+	if err := r.db.Read(&products); err != nil {
+		fmt.Println("file cannot be read")
+	}
 
 	for i := range products {
 		if products[i].Id == id {
@@ -99,15 +105,21 @@ func (r *repository) Update(id int, name, color string, price float64, stock int
 func (r *repository) UpdateName(id int, name string) (Product, error) {
 	var updatedProduct Product
 	updated := false
-	r.db.Read(&products)
+	fmt.Println("Product: ", products)
+
+	if err := r.db.Read(&products); err != nil {
+		fmt.Println("file cannot be read")
+	}
+
+	fmt.Println("Product: ", products)
 
 	for i := range products {
-        if products[i].Id == id {
-            products[i].Name = name
-            updated = true
-            updatedProduct= products[i]
-        }
-    }
+		if products[i].Id == id {
+			products[i].Name = name
+			updated = true
+			updatedProduct = products[i]
+		}
+	}
 
 	if !updated {
 		return Product{}, fmt.Errorf("product %d not found", id)
@@ -121,7 +133,9 @@ func (r *repository) UpdateName(id int, name string) (Product, error) {
 }
 
 func (r *repository) Delete(id int) error {
-	r.db.Read(&products)
+	if err := r.db.Read(&products); err != nil {
+		fmt.Println("file cannot be read")
+	}
 
 	deleted := false
 	for index, product := range products {
