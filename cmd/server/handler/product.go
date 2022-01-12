@@ -45,7 +45,8 @@ func (p *Product) GetAll() gin.HandlerFunc {
 		if err != nil {
 			ctx.JSON(500, web.NewResponse(500, nil, err.Error()))
 		}
-		ctx.JSON(200, web.NewResponse(200, productsList, ""))
+		// ctx.JSON(200, web.NewResponse(200, productsList, ""))
+		ctx.JSON(200, productsList)
 	}
 }
 
