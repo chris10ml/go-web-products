@@ -30,9 +30,10 @@ func createServer() *gin.Engine {
 
 	productsRoutes := router.Group("/products")
 	{
-		productsRoutes.GET("/", productHandler.GetAll())      // ejemplo
-		productsRoutes.POST("/", productHandler.Store())      // ejemplo
-		productsRoutes.PATCH("/:id", productHandler.Update()) // EJERCICIO 1
+		productsRoutes.GET("/", productHandler.GetAll())       // ejemplo
+		productsRoutes.POST("/", productHandler.Store())       // ejemplo
+		productsRoutes.PUT("/:id", productHandler.Update())    // EJERCICIO 1
+		productsRoutes.DELETE("/:id", productHandler.Delete()) // EJERCICIO 2
 	}
 
 	return router
@@ -52,8 +53,8 @@ func createRequestTest(method string, url string, body string) (*http.Request, *
 func Test_GetProduct_OK(t *testing.T) {
 	// estructura response
 	objRes := struct {
-		Code string      `json:"code"`
-		Data interface{} `json:"data"`
+		Code string             `json:"code"`
+		Data []products.Product `json:"data"`
 	}{}
 
 	// crear el Server y definir las Rutas
@@ -65,6 +66,9 @@ func Test_GetProduct_OK(t *testing.T) {
 	// indicar al servidor que pueda atender la solicitud
 	r.ServeHTTP(rr, req)
 	assert.Equal(t, 200, rr.Code)
+
+	fmt.Println("respuesta body: ", rr.Body)
+
 	err := json.Unmarshal(rr.Body.Bytes(), &objRes)
 
 	fmt.Println("respuesta: ", objRes)
@@ -80,9 +84,51 @@ func Test_SaveProduct_OK(t *testing.T) {
 	r := createServer()
 	// crear Request del tipo POST y Response para obtener el resultado
 	req, rr := createRequestTest(http.MethodPost, "/products/", `{
-        "nombre": "Tester","tipo": "Funcional","cantidad": 10,"precio": 99.99
+        "name": "soporte",
+		"color": "green",
+		"price": 89,
+		"stock": 15,
+		"code": "so1001",
+		"posted": true,
+		"date_created": "2022-01-13"
     }`)
 	// indicar al servidor que pueda atender la solicitud
 	r.ServeHTTP(rr, req)
+	assert.Equal(t, 200, rr.Code)
+}
+
+// --------------- UPDATE PRODUCT ---------------
+// Se actualiza un producto y se valida que sea exitosa.
+func Test_UpdateProduct_OK(t *testing.T) {
+	// crear el Server y definir las Rutas
+	r := createServer()
+	// crear Request del tipo PUT y Response para obtener el resultado
+	req, rr := createRequestTest(http.MethodPut, "/products/1", `{
+			"name": "soporte",
+			"color": "black",
+			"price": 89,
+			"stock": 15,
+			"code": "so1001",
+			"posted": true,
+			"date_created": "2022-01-13"
+		}`)
+	// indicar al servidor que pueda atender la solicitud
+	r.ServeHTTP(rr, req)
+	assert.Equal(t, 200, rr.Code)
+}
+
+// --------------- DELETE PRODUCT ---------------
+// Se elimina un producto y se valida que sea exitosa.
+func Test_DeleteProduct_OK(t *testing.T) {
+	// crear el Server y definir las Rutas
+	r := createServer()
+	// crear Request del tipo PUT y Response para obtener el resultado
+	req, rr := createRequestTest(http.MethodDelete, "/products/1", "")
+	// indicar al servidor que pueda atender la solicitud
+	r.ServeHTTP(rr, req)
+
+	fmt.Println("Response: ", rr)
+	fmt.Println("Request: ", req)
+
 	assert.Equal(t, 200, rr.Code)
 }

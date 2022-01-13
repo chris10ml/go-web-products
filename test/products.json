@@ -1,15 +1,5 @@
 [
   {
-    "id": 1,
-    "name": "mouse",
-    "color": "blanco",
-    "price": 130,
-    "stock": 70,
-    "code": "mo1001",
-    "posted": true,
-    "date_created": "2021-12-23"
-  },
-  {
     "id": 2,
     "name": "teclado",
     "color": "negro",
